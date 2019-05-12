@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 N=2
-K=1.0
+K=0.5
 
 omega_list=[(i/5)+5 for i in range(51)]
 
