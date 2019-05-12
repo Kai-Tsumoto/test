@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 NUM_OVERLAP = 15
 
 N = 1000
-P = 200  
+P = 120  
 M = np.linspace(0.1, 1, num=NUM_OVERLAP) 
 ITER = 20
 
