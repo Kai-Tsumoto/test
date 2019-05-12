@@ -50,8 +50,6 @@ for omega0 in omega_list:
 #	plt.plot(domega_hist, dOmega_hist)
 	plt.scatter(domega_hist,dOmega_hist,s=15)
 
-	print(dOmega_hist)
-	print(domega_hist)
 #結果のプロット
 plt.xlabel('Δomega')
 plt.ylabel('ΔOmega')
