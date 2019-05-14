@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use('TKAgg')
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as anime
@@ -18,54 +21,56 @@ ph=[ 1.0, 1.5 ]
 
 fig=plt.figure()
 
+ims=[]
+
+#variation of K for animation
 for i in range(16):
 
-	def plot(data):
+	#variation of delta omega
+	for omega0 in omega_list:
 
-		plt.cla()
-
-		for omega0 in omega_list:
-
-			omega=[ omega0, 10.0 ]
-			t=0
-			dph=[0,0]
-			ph0_hist=[ ph[0] ]   
-			ph1_hist=[ ph[1] ]  
-			psi_hist=[ ph[0]-ph[1] ]
-			domega_hist=[ ]
-			dOmega_hist=[ ]
-			t_hist=[t]
+		omega=[ omega0, 10.0 ]
+		t=0
+		dph=[0,0]
+		ph0_hist=[ ph[0] ]   
+		ph1_hist=[ ph[1] ]  
+		psi_hist=[ ph[0]-ph[1] ]
+		domega_hist=[ ]
+		dOmega_hist=[ ]
+		t_hist=[t]
 		
-			for m in range (M):
+		#euler method
+		for m in range (M): 
 	    		
-				dph[0]=(omega[0]+K*np.sin(ph[1]-ph[0]))*dt
-				dph[1]=(omega[1]+K*np.sin(ph[0]-ph[1]))*dt
+			dph[0]=(omega[0]+K*np.sin(ph[1]-ph[0]))*dt
+			dph[1]=(omega[1]+K*np.sin(ph[0]-ph[1]))*dt
 		
-				for i in range (N):
-					ph[i]=ph[i]+dph[i]
-				t += dt
+			for i in range (N):
+				ph[i]=ph[i]+dph[i]
+			t += dt
     
-				ph0_hist.append(ph[0])
-				ph1_hist.append(ph[1])
-				psi_hist.append(ph[0]-ph[1]) 
-				t_hist.append(t)
+			ph0_hist.append(ph[0])
+			ph1_hist.append(ph[1])
+			psi_hist.append(ph[0]-ph[1]) 
+			t_hist.append(t)
+
+		Omega0=(ph0_hist[M]-ph0_hist[int(M/2)])/(T/2)
+		Omega1=(ph1_hist[M]-ph1_hist[int(M/2)])/(T/2)
+		domega=omega[0]-omega[1]
+		dOmega=Omega0 - Omega1
 	
-			Omega0=(ph0_hist[M]-ph0_hist[int(M/2)])/(T/2)
-			Omega1=(ph1_hist[M]-ph1_hist[int(M/2)])/(T/2)
-			domega=omega[0]-omega[1]
+		dOmega_hist.append(dOmega)
+		domega_hist.append(domega)
 	
-			dOmega_hist.append(Omega0-Omega1)
-			domega_hist.append(domega)
-#	plt.plot(domega_hist, dOmega_hist)
-			im=plt.scatter(domega_hist,dOmega_hist,s=15)
+	plt.xlabel('Δω')
+	plt.ylabel('ΔΩ')
+	plt.xlim(-5,5)
+	plt.ylim(-5,5)
+	im=plt.plot(domega,dOmega)
+	ims.append(im)	
 
 	K=K+0.1
 	
-ani = anime.FuncAnimation(fig, plot, interval=100)
+ani = anime.FuncAnimation(fig, ims, interval=100)
 #結果のプロット
-plt.xlabel('Δomega')
-plt.ylabel('ΔOmega')
-#plt.scatter(domega_hist, dOmega_hist)
-plt.xlim(-5,5)
-plt.ylim(-5,5)
 plt.show()
