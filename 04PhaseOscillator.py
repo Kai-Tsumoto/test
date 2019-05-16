@@ -8,35 +8,36 @@ import matplotlib.animation as anime
 N=2
 K=0.0
 
-omega_list=[(i/5)+5 for i in range(51)]
+D=51 #kinds of omega
+omega_list=[(i/5)+5 for i in range(D)]
 
 dt=0.01     
 T=50           
 M = int(T/dt)   
 T0=T/2            
 M0 = int(T0/dt)   
+P=3 #fig pattern
 
 t=0
 ph=[ 1.0, 1.5 ]
 
-fig=plt.figure()
+fig =plt.figure()
 
-ims=[]
+domega_hist=np.empty((P,D))
+dOmega_hist=np.empty((P,D))
 
 #variation of K for animation
-for i in range(16):
+for i in range(P):
 
 	#variation of delta omega
-	for omega0 in omega_list:
-
-		omega=[ omega0, 10.0 ]
+	for j in range(D):
+	
+		omega=[ omega_list[j], 10.0 ]
 		t=0
 		dph=[0,0]
 		ph0_hist=[ ph[0] ]   
 		ph1_hist=[ ph[1] ]  
 		psi_hist=[ ph[0]-ph[1] ]
-		domega_hist=[ ]
-		dOmega_hist=[ ]
 		t_hist=[t]
 		
 		#euler method
@@ -45,8 +46,8 @@ for i in range(16):
 			dph[0]=(omega[0]+K*np.sin(ph[1]-ph[0]))*dt
 			dph[1]=(omega[1]+K*np.sin(ph[0]-ph[1]))*dt
 		
-			for i in range (N):
-				ph[i]=ph[i]+dph[i]
+			for k in range (N):
+				ph[k]=ph[k]+dph[k]
 			t += dt
     
 			ph0_hist.append(ph[0])
@@ -58,19 +59,20 @@ for i in range(16):
 		Omega1=(ph1_hist[M]-ph1_hist[int(M/2)])/(T/2)
 		domega=omega[0]-omega[1]
 		dOmega=Omega0 - Omega1
-	
-		dOmega_hist.append(dOmega)
-		domega_hist.append(domega)
-	
-	plt.xlabel('Δω')
-	plt.ylabel('ΔΩ')
-	plt.xlim(-5,5)
-	plt.ylim(-5,5)
-	im=plt.plot(domega,dOmega)
-	ims.append(im)	
 
-	K=K+0.1
+		dOmega_hist[i,j]=dOmega
+		domega_hist[i,j]=domega
+
+	ax= fig.add_subplot(1,3,1+i)
+	ax.set_xlabel("Δω")
+	ax.set_ylabel("ΔΩ")
+	ax.set_xlim(-5,5)
+	ax.set_ylim(-5,5)
+	ax.set_title("$K=$"+str(K))
+	ax.scatter(domega_hist[i,:],dOmega_hist[i,:])
+
+	K=K+0.5
 	
-ani = anime.FuncAnimation(fig, ims, interval=100)
 #結果のプロット
+plt.tight_layout()
 plt.show()
