@@ -61,6 +61,6 @@ for k in range(ITER):
 
 ani_art = animation.ArtistAnimation(fig, ims, interval=200)
 
-#plt.show()
+plt.show()
 
-ani_art.save("Hopfield_network.gif")
+#ani_art.save("Hopfield_network.gif")
