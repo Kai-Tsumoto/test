@@ -11,7 +11,7 @@ ITER = 30
 
 fig=plt.figure()
 
-im=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+im=[0]*15
 ims=[]
 
 plt.xlabel('Time step $t$')

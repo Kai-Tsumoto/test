@@ -16,7 +16,7 @@ T=50
 M = int(T/dt)   
 T0=T/2            
 M0 = int(T0/dt)   
-P=3 #fig pattern
+P=5 #fig pattern
 
 t=0
 ph=[ 1.0, 1.5 ]
@@ -63,7 +63,7 @@ for i in range(P):
 		dOmega_hist[i,j]=dOmega
 		domega_hist[i,j]=domega
 
-	ax= fig.add_subplot(1,3,1+i)
+	ax=fig.add_subplot(1,P,1+i)
 	ax.set_xlabel("Δω")
 	ax.set_ylabel("ΔΩ")
 	ax.set_xlim(-5,5)
